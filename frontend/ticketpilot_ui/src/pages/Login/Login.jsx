@@ -101,7 +101,7 @@ function Login() {
               Demo customer: ananya.iyer@example.com / Customer@123
             </Typography.Paragraph>
             <Typography.Paragraph type="secondary" style={{ fontSize: 12, marginBottom: 0 }}>
-              Demo manager: harshal.pawar@quickcrave.com / ChangeMe123!
+              Demo manager: harshal.pawar@quickcrave.com / Manager@123
             </Typography.Paragraph>
           </div>
         </div>

@@ -5,7 +5,13 @@
   gap: 12px;
   background: var(--qc-surface);
   border-bottom: 1px solid var(--qc-border);
-  flex-wrap: wrap;
+  /* Deliberately NOT flex-wrap: wrap -- antd's Header is a single row, and
+     with justify-content: space-between, a lone item that wraps onto its
+     own second line gets stuck at the LEFT edge (nothing to "space between"
+     it and), which is exactly the squashed/left-pinned icons seen on
+     narrow phones. Instead we keep one row and let .title's own
+     overflow/ellipsis (below) absorb the shrink -- .actions never moves. */
+  padding: 0 20px;
 }
 
 .brandGroup {
@@ -27,9 +33,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 @media (max-width: 640px) {
+  .header {
+    padding: 0 14px;
+  }
+
   .title {
     font-size: 15px !important;
   }
