@@ -1,0 +1,102 @@
+.hero {
+  text-align: center;
+  padding: 28px 12px 8px;
+}
+
+/* Two-column layout: the live order-status panel on the left, the
+   "Get Help" entry on the right -- kept as separate, side-by-side
+   concerns so checking order status never reads as part of the chat.
+   Stacks (status above help) once there isn't room for both. */
+.columns {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+}
+
+.leftCol,
+.rightCol {
+  flex: 1;
+  min-width: 0;
+}
+
+.rightCol {
+  display: flex;
+}
+
+.rightCol > :global(.ant-card) {
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .columns {
+    flex-direction: column;
+  }
+}
+
+/* "Get Help" entry card -- the single tappable entry point into
+   support, in the pattern of a real delivery app's help center: one
+   clear card, tapping it opens the issue-category sheet (ScenarioPicker,
+   rendered inside an antd Drawer) rather than dumping every option on
+   the page at once. */
+.helpEntry {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--qc-border) !important;
+  cursor: pointer;
+  text-align: left;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.helpEntry:hover {
+  box-shadow: 0 10px 28px rgba(var(--qc-shadow-tint), 0.16);
+  transform: translateY(-2px);
+  border-color: var(--qc-primary) !important;
+}
+
+.helpEntryIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--qc-shadow-tint), 0.12);
+  color: var(--qc-primary);
+}
+
+.helpEntryBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.helpEntryTitle {
+  font-weight: 700;
+  font-size: 15px;
+  display: block;
+}
+
+.helpEntrySubtitle {
+  font-size: 13px;
+  color: var(--qc-text-muted);
+}
+
+.helpEntryChevron {
+  color: var(--qc-text-muted);
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .helpEntry {
+    padding: 16px !important;
+    gap: 12px;
+  }
+
+  .helpEntryIcon {
+    width: 40px;
+    height: 40px;
+  }
+}

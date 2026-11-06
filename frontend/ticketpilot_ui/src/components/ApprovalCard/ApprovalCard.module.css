@@ -1,0 +1,80 @@
+.card {
+  margin-bottom: 16px !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--qc-border) !important;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.section {
+  margin-bottom: 4px;
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--qc-text-muted);
+  margin-bottom: 4px;
+}
+
+.issueText {
+  font-size: 13.5px;
+  color: var(--qc-text);
+}
+
+.orderGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 13px;
+}
+
+.orderGrid span {
+  color: var(--qc-text-muted);
+}
+
+.orderGrid b {
+  color: var(--qc-text);
+  font-weight: 600;
+}
+
+.policyChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(var(--qc-shadow-tint), 0.12);
+  color: var(--qc-primary);
+}
+
+.noPolicy {
+  font-size: 12.5px;
+  color: var(--qc-text-muted);
+}
+
+.chatToggle {
+  padding: 0 !important;
+  height: auto !important;
+  font-size: 12.5px;
+}
+
+.chatBox {
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid var(--qc-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: var(--qc-bg);
+}

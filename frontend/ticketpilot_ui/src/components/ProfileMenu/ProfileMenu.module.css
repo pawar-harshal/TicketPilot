@@ -1,0 +1,22 @@
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--qc-border);
+  background: var(--qc-surface);
+  cursor: pointer;
+  color: var(--qc-text);
+  font-family: inherit;
+  line-height: 0;
+}
+
+.trigger:hover {
+  border-color: var(--qc-primary);
+}
+
+.avatar {
+  background: var(--qc-primary) !important;
+  flex-shrink: 0;
+}

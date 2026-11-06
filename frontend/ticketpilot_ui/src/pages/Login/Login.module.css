@@ -1,0 +1,109 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(circle at 50% 35%, rgba(2, 1, 10, 0.1), rgba(2, 1, 10, 0.55));
+  pointer-events: none;
+}
+
+.topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+.center {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 20px 60px;
+}
+
+.panel {
+  width: 100%;
+  max-width: 440px;
+  padding: 40px 36px;
+  border-radius: 24px;
+  background: rgba(var(--qc-surface-tint), 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 30px 70px rgba(2, 1, 10, 0.45);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+}
+
+.panelHeading {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.panelTitle {
+  margin-bottom: 2px !important;
+}
+
+.form :global(.ant-form-item-label) > :global(label)::after {
+  display: none;
+}
+
+.form :global(.ant-input),
+.form :global(.ant-input-affix-wrapper) {
+  background: var(--qc-bg);
+  border-radius: 10px;
+}
+
+.submit {
+  height: 44px;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.demoHints {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.backLink {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .panel {
+    padding: 30px 22px;
+    border-radius: 18px;
+  }
+}

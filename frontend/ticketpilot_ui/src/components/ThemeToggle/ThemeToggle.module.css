@@ -1,0 +1,11 @@
+.toggle {
+  border: 1px solid var(--qc-border);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  display: block;
+}

@@ -1,0 +1,60 @@
+<mxfile host="app.diagrams.net" modified="2026-10-21T00:00:00.000Z" agent="Claude" version="22.1.0">
+  <diagram name="System Architecture" id="arch1">
+    <mxGraphModel dx="900" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="650" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="TicketPilot - System Architecture" style="text;html=1;fontSize=18;fontStyle=0;align=center;" vertex="1" parent="1">
+          <mxGeometry x="260" y="10" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="user" value="Customer / Support Manager" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="350" y="60" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="frontend" value="React.js + Redux Frontend&#10;(Ticket Inbox, Approval Queue)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="330" y="150" width="240" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="backend" value="FastAPI Backend&#10;(TicketPilot API)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="350" y="260" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="agent" value="AgentOrchestrator&#10;(tool-calling loop)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="350" y="360" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="llm" value="LLM Provider&#10;(tool-calling API)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="640" y="360" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mysql" value="MySQL&#10;(Customer, Order, Ticket,&#10;TicketMessage, Approval,&#10;AuditLog, User)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="90" y="460" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="qdrant" value="Qdrant&#10;(knowledge_base_articles&#10;embeddings)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="350" y="460" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="auth" value="auth module&#10;(User table, login,&#10;JWT issue/verify)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="600" y="460" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="utils" value="utils/ (stdlib wrappers)&#10;Logger.py (logging)&#10;ConfigReader.py (configparser)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="820" y="460" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="user" target="frontend"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="frontend" target="backend"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="backend" target="agent"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="agent" target="llm"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="backend" target="mysql"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" edge="1" parent="1" source="agent" target="qdrant"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;dashed=1;" edge="1" parent="1" source="backend" target="auth"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;dashed=1;" edge="1" parent="1" source="backend" target="utils"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

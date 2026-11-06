@@ -1,0 +1,158 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--qc-bg);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Split hero -- left: logo/tagline/CTA, right: the agent orb. Stacks to
+   a single column under 900px (orb moves below the text). */
+.hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 24px 48px 48px;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    padding: 12px 20px 32px;
+    gap: 36px;
+  }
+}
+
+/* A fixed, deliberate rhythm instead of centering the block in whatever
+   leftover vertical space the viewport happens to have. Every piece
+   below has its OWN margin set once, here, rather than fighting antd's
+   own Title/Paragraph default margins. */
+.left {
+  flex: 2.2;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 920px;
+  padding: 20px 0;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--qc-primary);
+  margin: 0 0 18px;
+}
+
+.eyebrowDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--qc-primary);
+  box-shadow: 0 0 0 4px rgba(var(--qc-shadow-tint), 0.18);
+}
+
+/* Distinct display face for the headline only -- Space Grotesk (loaded
+   in index.html) instead of Inter, so this line reads as a deliberate
+   display treatment rather than "big body text". Uppercase, bold, and
+   tightened tracking since all-caps at this weight needs it to avoid
+   feeling loose. */
+.tagline {
+  margin: 0 0 22px !important;
+  font-family: "Space Grotesk", Inter, sans-serif !important;
+  font-size: clamp(30px, 4.6vw, 48px) !important;
+  font-weight: 700 !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: uppercase !important;
+}
+
+.description {
+  font-size: 19px;
+  line-height: 1.6;
+  max-width: 760px;
+  margin: 0 0 32px !important;
+}
+
+/* ---- The agent orb -- a circular, glowing instance of the Silk shader
+   standing in for "our AI agent", instead of a big rectangular panel. ---- */
+.right {
+  flex: 0.8;
+  min-width: 0;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbStage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.orbGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 135%;
+  height: 135%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(var(--qc-shadow-tint), 0.55), transparent 68%);
+  filter: blur(36px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.orb {
+  position: relative;
+  z-index: 1;
+  width: clamp(250px, 34vw, 430px);
+  height: clamp(250px, 34vw, 430px);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 30px 80px rgba(var(--qc-shadow-tint), 0.35);
+}
+
+.caption {
+  position: relative;
+  z-index: 1;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--qc-text-muted);
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 900px) {
+  .orb {
+    width: clamp(200px, 50vw, 280px);
+    height: clamp(200px, 50vw, 280px);
+  }
+}

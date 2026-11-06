@@ -1,0 +1,72 @@
+.page {
+  min-height: 100vh;
+  background: var(--qc-bg);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.shell {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+.card {
+  border-radius: 18px !important;
+  border: 1px solid var(--qc-border) !important;
+  padding: 8px;
+}
+
+.avatarRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0 8px;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.roleTag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--qc-primary);
+  background: rgba(var(--qc-shadow-tint), 0.12);
+  padding: 3px 12px;
+  border-radius: 999px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--qc-text-muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .shell {
+    padding: 16px 12px 32px;
+  }
+}

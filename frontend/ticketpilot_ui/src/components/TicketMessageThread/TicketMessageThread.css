@@ -1,0 +1,137 @@
+.chat-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 2px 8px;
+  max-height: 58vh;
+  overflow-y: auto;
+}
+
+.chat-thread--empty {
+  padding: 32px 0;
+  text-align: center;
+}
+
+.chat-row {
+  display: flex;
+  width: 100%;
+}
+
+.chat-row--customer {
+  justify-content: flex-end;
+}
+
+.chat-row--agent {
+  justify-content: flex-start;
+}
+
+.chat-bubble {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: 0 1px 2px rgba(20, 20, 20, 0.06);
+}
+
+.chat-bubble--customer {
+  background: var(--qc-primary);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble--agent {
+  background: #ffffff;
+  color: #262626;
+  border: 1px solid #f0e4da;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble__sender {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--qc-primary);
+  margin-bottom: 2px;
+}
+
+.chat-bubble__time {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.65;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.chat-bubble--agent .chat-bubble__time {
+  justify-content: flex-start;
+}
+
+.chat-bubble--customer .chat-bubble__time {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* WhatsApp-style "delivered" double-check, shown only on the
+   customer's own messages -- there's no real read-receipt concept on
+   the backend, this is purely the familiar visual cue. */
+.chat-bubble__ticks {
+  color: #cfe8ff;
+  font-size: 12px;
+  letter-spacing: -2px;
+}
+
+.chat-system-row {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+.chat-system-pill {
+  background: #f3efe9;
+  color: #7a6f63;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  text-align: center;
+  max-width: 85%;
+}
+
+.chat-bubble--typing {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+}
+
+.chat-typing-label {
+  font-size: 12.5px;
+  color: #8a7f74;
+  font-style: italic;
+  margin-right: 2px;
+}
+
+.chat-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c9c0b5;
+  animation: chat-typing-bounce 1.2s infinite ease-in-out;
+}
+
+.chat-typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.chat-typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes chat-typing-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}

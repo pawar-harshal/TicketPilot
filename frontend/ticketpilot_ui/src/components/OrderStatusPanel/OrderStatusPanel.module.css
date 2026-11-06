@@ -1,0 +1,193 @@
+.panel {
+  border-radius: 18px !important;
+  border: 1px solid var(--qc-border) !important;
+  height: 100%;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.orderLabel {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--qc-text-muted);
+}
+
+.statusPill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(var(--qc-shadow-tint), 0.12);
+  color: var(--qc-primary);
+}
+
+.statusPillCancelled {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+
+.items {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.total {
+  font-size: 13px;
+  color: var(--qc-text-muted);
+  margin-bottom: 4px;
+}
+
+.lateNote {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d97706;
+  margin-bottom: 8px;
+}
+
+/* ---- route animation ---- */
+
+.route {
+  margin-top: 28px;
+}
+
+.routeTrack {
+  position: relative;
+  height: 32px;
+}
+
+.routeLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  background-image: linear-gradient(to right, var(--qc-border) 0 6px, transparent 6px 12px);
+  background-size: 12px 2px;
+  background-repeat: repeat-x;
+}
+
+.routeLineFill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  background: var(--qc-primary);
+  transition: width 0.6s ease;
+  z-index: 1;
+}
+
+.waypoint {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--qc-surface, #fff);
+  border: 2px solid var(--qc-border);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.waypointStart { left: 4%; }
+.waypointMid { left: 50%; }
+.waypointEnd { left: 100%; }
+
+.waypointDone {
+  border-color: var(--qc-primary);
+  background: var(--qc-primary);
+}
+
+.van {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--qc-primary);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(var(--qc-shadow-tint), 0.3);
+  transition: left 0.6s ease;
+}
+
+/* Gentle idle "being prepared" breathing, no forward motion yet. */
+.vanIdle {
+  animation: vanBreathe 1.8s ease-in-out infinite;
+}
+
+@keyframes vanBreathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.12); }
+}
+
+/* Small continuous side-to-side wiggle while out for delivery, so the
+   van reads as actively moving even though its overall position only
+   updates when the real status changes. */
+.vanDriving {
+  animation: vanDrive 1.2s ease-in-out infinite;
+}
+
+@keyframes vanDrive {
+  0%, 100% { transform: translate(-50%, -50%) translateX(-2px); }
+  50% { transform: translate(-50%, -50%) translateX(2px); }
+}
+
+.routeLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--qc-text-muted);
+}
+
+/* ---- cancelled state ---- */
+
+.routeCancelled {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.routeLineCancelled {
+  flex: 1;
+  height: 2px;
+  background-image: linear-gradient(to right, var(--qc-border) 0 6px, transparent 6px 12px);
+  background-size: 12px 2px;
+  background-repeat: repeat-x;
+  opacity: 0.5;
+}
+
+.cancelledBadge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+
+.cancelledLabel {
+  font-size: 12px;
+  color: var(--qc-text-muted);
+  white-space: nowrap;
+}

@@ -1,0 +1,109 @@
+2026-11-02 02:40:24,810 | INFO | ticketpilot_das.utils.Configuration | Configuration loaded successfully from config.ini (with any env-var overrides applied).
+2026-11-02 02:40:31,603 | INFO | ticketpilot_das.main | auto_create_tables is on -- creating any missing tables.
+2026-11-02 02:40:31,739 | INFO | ticketpilot_das.main | Loading master-table caches.
+2026-11-02 02:40:31,779 | INFO | ticketpilot_das.main | Master-table caches loaded.
+2026-11-02 02:51:34,519 | INFO | ticketpilot_das.utils.Configuration | Configuration loaded successfully from config.ini (with any env-var overrides applied).
+2026-11-02 02:51:38,898 | INFO | uvicorn.error | Started server process [14716]
+2026-11-02 02:51:38,898 | INFO | uvicorn.error | Waiting for application startup.
+2026-11-02 02:51:38,911 | INFO | ticketpilot_das.main | auto_create_tables is on -- creating any missing tables.
+2026-11-02 02:51:39,062 | INFO | ticketpilot_das.main | Loading master-table caches.
+2026-11-02 02:51:39,098 | INFO | ticketpilot_das.main | Master-table caches loaded.
+2026-11-02 02:51:39,099 | INFO | uvicorn.error | Application startup complete.
+2026-11-02 02:51:39,099 | INFO | uvicorn.error | Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+2026-11-02 02:56:03,262 | INFO | uvicorn.access | 127.0.0.1:52947 - "OPTIONS /auth/login HTTP/1.1" 200
+2026-11-02 02:56:03,594 | INFO | ticketpilot_das.auth.routes.Auth | POST login -- email=rohan.deshmukh@example.com
+2026-11-02 02:56:03,713 | WARNING | ticketpilot_das.auth.db_operations.Auth | Failed manager login attempt for email 'rohan.deshmukh@example.com'.
+2026-11-02 02:56:04,545 | INFO | ticketpilot_das.auth.db_operations.Auth | Customer 1 (rohan.deshmukh@example.com) logged in.
+2026-11-02 02:56:04,628 | INFO | uvicorn.access | 127.0.0.1:52947 - "POST /auth/login HTTP/1.1" 200
+2026-11-02 02:56:21,335 | INFO | uvicorn.access | 127.0.0.1:60050 - "OPTIONS /ticketmanagement/submitTicket HTTP/1.1" 200
+2026-11-02 02:56:21,358 | INFO | ticketpilot_das.ticket_management.routes.Ticket | POST submitTicket -- customer_id=1 order_id=None
+2026-11-02 02:56:21,393 | INFO | ticketpilot_das.ticket_management.db_operations.Ticket | Ticket 28 submitted for customer 1, order 1
+2026-11-02 02:56:28,937 | INFO | ticketpilot_das.ticket_management.tools.KnowledgeSearchTool | Qdrant running in local/embedded mode at 'D:/TicketPilot/backend/ticket_pilot_das/qdrant_data'.
+2026-11-02 02:56:33,156 | INFO | ticketpilot_das.ticket_management.AgentOrchestrator | Ticket 28 replied to by the agent -- awaiting the customer.
+2026-11-02 02:56:33,160 | INFO | uvicorn.access | 127.0.0.1:60050 - "POST /ticketmanagement/submitTicket HTTP/1.1" 200
+2026-11-02 02:56:33,283 | INFO | uvicorn.access | 127.0.0.1:60050 - "OPTIONS /ticketmanagement/getTicket/28 HTTP/1.1" 200
+2026-11-02 02:56:33,288 | WARNING | ticketpilot_das.auth.db_operations.Auth | Token with role 'customer' rejected for a manager-only endpoint.
+2026-11-02 02:56:33,291 | INFO | uvicorn.access | 127.0.0.1:60050 - "GET /ticketmanagement/getTicket/28 HTTP/1.1" 200
+2026-11-02 02:58:22,187 | INFO | uvicorn.access | 127.0.0.1:49504 - "OPTIONS /ticketmanagement/getTickets HTTP/1.1" 200
+2026-11-02 02:58:22,210 | WARNING | ticketpilot_das.auth.db_operations.Auth | Token with role 'customer' rejected for a manager-only endpoint.
+2026-11-02 02:58:22,274 | INFO | uvicorn.access | 127.0.0.1:49504 - "GET /ticketmanagement/getTickets HTTP/1.1" 200
+2026-11-02 02:58:46,020 | INFO | ticketpilot_das.ticket_management.routes.Ticket | POST submitTicket -- customer_id=1 order_id=None
+2026-11-02 02:58:46,113 | INFO | ticketpilot_das.ticket_management.db_operations.Ticket | Ticket 29 submitted for customer 1, order 1
+2026-11-02 02:58:54,665 | INFO | ticketpilot_das.ticket_management.tools.ApprovalTool | propose_action called for ticket 29: refund 420.0 (The order is significantly overdue and has not been delivered.)
+2026-11-02 02:58:54,682 | INFO | ticketpilot_das.approval_engine.db_operations.Approval | Approval 6 created for ticket 29 (refund 420.0)
+2026-11-02 02:58:54,705 | INFO | ticketpilot_das.ticket_management.AgentOrchestrator | Ticket 29 decision made via tool 'propose_action'.
+2026-11-02 02:58:54,709 | INFO | uvicorn.access | 127.0.0.1:60435 - "POST /ticketmanagement/submitTicket HTTP/1.1" 200
+2026-11-02 02:58:54,808 | INFO | uvicorn.access | 127.0.0.1:60435 - "OPTIONS /ticketmanagement/getTicket/29 HTTP/1.1" 200
+2026-11-02 02:58:54,819 | WARNING | ticketpilot_das.auth.db_operations.Auth | Token with role 'customer' rejected for a manager-only endpoint.
+2026-11-02 02:58:54,822 | INFO | uvicorn.access | 127.0.0.1:60435 - "GET /ticketmanagement/getTicket/29 HTTP/1.1" 200
+2026-11-02 02:59:23,482 | ERROR | ticketpilot_das.utils.Database | Database session raised an error, rolling back: 401: Login required.
+2026-11-02 02:59:23,485 | INFO | uvicorn.access | 127.0.0.1:56971 - "GET /ticketmanagement/getTicket/29 HTTP/1.1" 401
+2026-11-02 02:59:33,919 | INFO | ticketpilot_das.auth.routes.Auth | POST login -- email=ananya.iyer@example.com
+2026-11-02 02:59:33,923 | WARNING | ticketpilot_das.auth.db_operations.Auth | Failed manager login attempt for email 'ananya.iyer@example.com'.
+2026-11-02 02:59:34,162 | INFO | ticketpilot_das.auth.db_operations.Auth | Customer 2 (ananya.iyer@example.com) logged in.
+2026-11-02 02:59:34,163 | INFO | uvicorn.access | 127.0.0.1:65004 - "POST /auth/login HTTP/1.1" 200
+2026-11-02 02:59:39,745 | WARNING | ticketpilot_das.auth.db_operations.Auth | Token with role 'customer' rejected for a manager-only endpoint.
+2026-11-02 02:59:39,747 | WARNING | ticketpilot_das.ticket_management.routes.Ticket | getTicket rejected -- customer 2 tried to view ticket 29 owned by customer 1.
+2026-11-02 02:59:39,748 | ERROR | ticketpilot_das.utils.Database | Database session raised an error, rolling back: 403: This isn't your ticket.
+2026-11-02 02:59:39,753 | INFO | uvicorn.access | 127.0.0.1:57960 - "GET /ticketmanagement/getTicket/29 HTTP/1.1" 403
+2026-11-02 02:59:58,133 | INFO | ticketpilot_das.auth.routes.Auth | POST login -- email=harshal.pawar@quickcrave.com
+2026-11-02 02:59:58,372 | INFO | ticketpilot_das.auth.db_operations.Auth | User 1 (harshal.pawar@quickcrave.com) logged in.
+2026-11-02 02:59:58,373 | INFO | uvicorn.access | 127.0.0.1:53565 - "POST /auth/login HTTP/1.1" 200
+2026-11-02 02:59:58,502 | INFO | uvicorn.access | 127.0.0.1:53565 - "OPTIONS /approvalengine/getPendingApprovals HTTP/1.1" 200
+2026-11-02 02:59:58,503 | INFO | uvicorn.access | 127.0.0.1:56018 - "OPTIONS /ticketmanagement/getTickets?status=escalated HTTP/1.1" 200
+2026-11-02 02:59:58,695 | INFO | uvicorn.access | 127.0.0.1:53565 - "GET /ticketmanagement/getTickets HTTP/1.1" 200
+2026-11-02 02:59:58,807 | INFO | uvicorn.access | 127.0.0.1:56018 - "GET /approvalengine/getPendingApprovals HTTP/1.1" 200
+2026-11-02 02:59:58,810 | INFO | uvicorn.access | 127.0.0.1:62694 - "GET /ticketmanagement/getTickets?status=escalated HTTP/1.1" 200
+2026-11-02 03:00:46,753 | INFO | uvicorn.access | 127.0.0.1:50977 - "OPTIONS /approvalengine/approveAction/5 HTTP/1.1" 200
+2026-11-02 03:00:46,759 | INFO | ticketpilot_das.approval_engine.routes.Approval | POST approveAction -- approval_id=5 by user=1
+2026-11-02 03:00:46,800 | INFO | ticketpilot_das.approval_engine.db_operations.Approval | Approval 5 approved by user 1
+2026-11-02 03:00:46,801 | INFO | uvicorn.access | 127.0.0.1:50977 - "POST /approvalengine/approveAction/5 HTTP/1.1" 200
+2026-11-02 03:00:55,932 | INFO | uvicorn.access | 127.0.0.1:59885 - "OPTIONS /approvalengine/approveAction/6 HTTP/1.1" 200
+2026-11-02 03:00:55,936 | INFO | ticketpilot_das.approval_engine.routes.Approval | POST approveAction -- approval_id=6 by user=1
+2026-11-02 03:00:55,951 | INFO | ticketpilot_das.approval_engine.db_operations.Approval | Approval 6 approved by user 1
+2026-11-02 03:00:55,952 | INFO | uvicorn.access | 127.0.0.1:59885 - "POST /approvalengine/approveAction/6 HTTP/1.1" 200
+2026-11-02 03:01:04,876 | INFO | uvicorn.access | 127.0.0.1:61319 - "GET /approvalengine/getPendingApprovals HTTP/1.1" 200
+2026-11-02 03:01:04,924 | INFO | uvicorn.access | 127.0.0.1:49969 - "GET /ticketmanagement/getTickets?status=escalated HTTP/1.1" 200
+2026-11-02 03:01:04,965 | INFO | uvicorn.access | 127.0.0.1:55845 - "GET /ticketmanagement/getTickets HTTP/1.1" 200
+2026-11-02 03:01:55,129 | INFO | ticketpilot_das.auth.routes.Auth | POST login -- email=harshal.pawar@quickcrave.com
+2026-11-02 03:01:55,365 | INFO | ticketpilot_das.auth.db_operations.Auth | User 1 (harshal.pawar@quickcrave.com) logged in.
+2026-11-02 03:01:55,366 | INFO | uvicorn.access | 127.0.0.1:57021 - "POST /auth/login HTTP/1.1" 200
+2026-11-02 03:01:55,507 | INFO | uvicorn.access | 127.0.0.1:57021 - "GET /approvalengine/getPendingApprovals HTTP/1.1" 200
+2026-11-02 03:01:55,525 | INFO | uvicorn.access | 127.0.0.1:64231 - "GET /ticketmanagement/getTickets?status=escalated HTTP/1.1" 200
+2026-11-02 03:01:55,555 | INFO | uvicorn.access | 127.0.0.1:52407 - "GET /ticketmanagement/getTickets HTTP/1.1" 200
+2026-11-02 03:02:21,306 | INFO | uvicorn.access | 127.0.0.1:64603 - "OPTIONS /approvalengine/rejectAction/1 HTTP/1.1" 200
+2026-11-02 03:02:21,312 | INFO | ticketpilot_das.approval_engine.routes.Approval | POST rejectAction -- approval_id=1 by user=1
+2026-11-02 03:02:21,331 | INFO | ticketpilot_das.approval_engine.db_operations.Approval | Approval 1 rejected by user 1
+2026-11-02 03:02:21,332 | INFO | uvicorn.access | 127.0.0.1:64603 - "POST /approvalengine/rejectAction/1 HTTP/1.1" 200
+2026-11-02 03:11:45,838 | INFO | ticketpilot_das.utils.Configuration | Configuration loaded successfully from config.ini (with any env-var overrides applied).
+2026-11-02 03:12:01,041 | INFO | uvicorn.error | Started server process [27460]
+2026-11-02 03:12:01,041 | INFO | uvicorn.error | Waiting for application startup.
+2026-11-02 03:12:01,110 | INFO | ticketpilot_das.main | auto_create_tables is on -- creating any missing tables.
+2026-11-02 03:12:06,037 | INFO | ticketpilot_das.main | Loading master-table caches.
+2026-11-02 03:12:06,192 | INFO | ticketpilot_das.main | Master-table caches loaded.
+2026-11-02 03:12:06,192 | INFO | uvicorn.error | Application startup complete.
+2026-11-02 03:12:06,192 | INFO | uvicorn.error | Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+2026-11-02 03:12:17,732 | INFO | uvicorn.access | 127.0.0.1:61971 - "OPTIONS /approvalengine/getPendingApprovals HTTP/1.1" 200
+2026-11-02 03:12:17,733 | INFO | uvicorn.access | 127.0.0.1:64967 - "OPTIONS /ticketmanagement/getTickets?status=escalated HTTP/1.1" 200
+2026-11-02 03:12:17,734 | INFO | uvicorn.access | 127.0.0.1:55034 - "OPTIONS /ticketmanagement/getTickets HTTP/1.1" 200
+2026-11-02 03:12:18,098 | INFO | uvicorn.access | 127.0.0.1:55034 - "GET /approvalengine/getPendingApprovals HTTP/1.1" 200
+2026-11-02 03:12:18,184 | INFO | uvicorn.access | 127.0.0.1:64967 - "GET /ticketmanagement/getTickets?status=escalated HTTP/1.1" 200
+2026-11-02 03:12:18,221 | INFO | uvicorn.access | 127.0.0.1:61971 - "GET /ticketmanagement/getTickets HTTP/1.1" 200
+2026-11-02 03:12:29,097 | INFO | uvicorn.access | 127.0.0.1:52598 - "OPTIONS /auth/login HTTP/1.1" 200
+2026-11-02 03:12:29,121 | INFO | ticketpilot_das.auth.routes.Auth | POST login -- email=rohan.deshmukh@example.com
+2026-11-02 03:12:29,137 | WARNING | ticketpilot_das.auth.db_operations.Auth | Failed manager login attempt for email 'rohan.deshmukh@example.com'.
+2026-11-02 03:12:29,624 | INFO | ticketpilot_das.auth.db_operations.Auth | Customer 1 (rohan.deshmukh@example.com) logged in.
+2026-11-02 03:12:29,625 | INFO | uvicorn.access | 127.0.0.1:52598 - "POST /auth/login HTTP/1.1" 200
+2026-11-02 03:12:56,612 | INFO | uvicorn.access | 127.0.0.1:64632 - "OPTIONS /ticketmanagement/submitTicket HTTP/1.1" 200
+2026-11-02 03:12:56,914 | INFO | ticketpilot_das.ticket_management.routes.Ticket | POST submitTicket -- customer_id=1 order_id=None
+2026-11-02 03:12:59,661 | INFO | ticketpilot_das.ticket_management.db_operations.Ticket | Ticket 30 submitted for customer 1, order 1
+2026-11-02 03:13:09,032 | INFO | ticketpilot_das.ticket_management.tools.KnowledgeSearchTool | Qdrant running in local/embedded mode at 'D:/TicketPilot/backend/ticket_pilot_das/qdrant_data'.
+2026-11-02 03:13:13,165 | INFO | ticketpilot_das.ticket_management.AgentOrchestrator | Ticket 30 replied to by the agent -- awaiting the customer.
+2026-11-02 03:13:13,168 | INFO | uvicorn.access | 127.0.0.1:64632 - "POST /ticketmanagement/submitTicket HTTP/1.1" 200
+2026-11-02 03:13:13,233 | INFO | uvicorn.access | 127.0.0.1:60675 - "OPTIONS /ticketmanagement/getTicket/30 HTTP/1.1" 200
+2026-11-02 03:13:13,243 | WARNING | ticketpilot_das.auth.db_operations.Auth | Token with role 'customer' rejected for a manager-only endpoint.
+2026-11-02 03:13:13,247 | INFO | uvicorn.access | 127.0.0.1:60675 - "GET /ticketmanagement/getTicket/30 HTTP/1.1" 200
+2026-11-02 03:14:11,927 | INFO | uvicorn.error | Shutting down
+2026-11-02 03:14:12,038 | INFO | uvicorn.error | Waiting for application shutdown.
+2026-11-02 03:14:12,042 | INFO | uvicorn.error | Application shutdown complete.
+2026-11-02 03:14:12,042 | INFO | uvicorn.error | Finished server process [27460]

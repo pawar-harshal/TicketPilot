@@ -1,0 +1,62 @@
+<mxfile host="app.diagrams.net" modified="2026-10-21T00:00:00.000Z" agent="Claude" version="22.1.0">
+  <diagram name="Database ER Diagram" id="er1">
+    <mxGraphModel dx="950" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="980" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="TicketPilot - Database ER Diagram" style="text;html=1;fontSize=18;fontStyle=0;align=center;" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="customers" value="Customer&#10;id (PK)&#10;name&#10;email&#10;phone&#10;created_at" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="180" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="orders" value="Order&#10;id (PK)&#10;customer_id (FK)&#10;items (json)&#10;total_amount&#10;status&#10;delivery_eta&#10;delivered_at" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="330" y="80" width="200" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tickets" value="Ticket&#10;id (PK)&#10;customer_id (FK)&#10;order_id (FK, NOT NULL)&#10;status&#10;investigation_trail (json)&#10;created_at&#10;resolved_at" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="220" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ticketmessages" value="TicketMessage&#10;id (PK)&#10;ticket_id (FK)&#10;sender&#10;message&#10;created_at" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="450" width="220" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="kb" value="KnowledgeBaseArticle&#10;id (PK)&#10;title&#10;content&#10;embedding_synced" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="650" y="80" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="approvals" value="Approval&#10;id (PK)&#10;ticket_id (FK)&#10;action_type&#10;amount&#10;reason&#10;status&#10;approver_id (FK -&gt; User)&#10;decided_at" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="370" y="320" width="220" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="users" value="User&#10;id (PK)&#10;email&#10;password_hash&#10;role&#10;created_at" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="370" y="520" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="audit" value="AuditLog&#10;id (PK)&#10;ticket_id (FK)&#10;approval_id (FK, nullable)&#10;action&#10;actor&#10;created_at" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="680" y="320" width="220" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" value="1..N" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmany;startArrow=ERone;" edge="1" parent="1" source="customers" target="orders"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" value="1..N" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmany;startArrow=ERone;" edge="1" parent="1" source="customers" target="tickets"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" value="1..1" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERone;startArrow=ERone;" edge="1" parent="1" source="orders" target="tickets"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3b" value="1..N" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmany;startArrow=ERone;" edge="1" parent="1" source="tickets" target="ticketmessages"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" value="1..N" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmany;startArrow=ERone;" edge="1" parent="1" source="tickets" target="approvals"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" value="1..N" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmany;startArrow=ERone;" edge="1" parent="1" source="tickets" target="audit"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" value="0..1" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERzeroToOne;startArrow=ERone;" edge="1" parent="1" source="approvals" target="audit"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" value="0..1" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERzeroToOne;startArrow=ERone;" edge="1" parent="1" source="users" target="approvals"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="note_kb" value="KnowledgeBaseArticle is referenced by the agent at query time via Qdrant semantic search, not a direct foreign key." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=9;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="200" width="250" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="note_auth" value="User belongs to the auth module. It is only referenced here as the target of Approval.approver_id." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=9;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="540" width="250" height="60" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

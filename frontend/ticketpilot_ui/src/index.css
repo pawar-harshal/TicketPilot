@@ -1,0 +1,225 @@
+:root {
+  /* Deep indigo/purple palette, lifted directly from the landing page's
+     Silk shader background -- mirrors main.jsx's antd ConfigProvider
+     theme.token.colorPrimary. One accent, reused at different weights
+     instead of a different bright hue per status. Shader stops, for
+     reference: #02010A -> #04052E -> #3D2C8D -> #916BBF. */
+  --qc-primary: #3d2c8d;
+  --qc-primary-dark: #2c2066;
+  --qc-bg: #f7f6fb;
+  --qc-surface: #ffffff;
+  --qc-text: #1b1726;
+  --qc-text-muted: #6b6478;
+  --qc-border: #e3e0ee;
+  --qc-shadow-tint: 61, 44, 141; /* rgb() triplet of --qc-primary, for box-shadow rgba() */
+  --qc-surface-tint: 255, 255, 255; /* rgb() triplet of --qc-surface, for frosted-glass rgba() panels */
+}
+
+/* Dark mode -- toggled by main.jsx setting data-theme on <html>, kept in
+   sync with uiSlice's persisted mode. Only this file's variables change;
+   antd's own dark algorithm (see main.jsx) handles its own components.
+   Background moves to the same near-black indigo the shader starts from,
+   instead of a generic dark gray, so dark mode still feels like the same
+   product as the landing page. */
+:root[data-theme="dark"] {
+  --qc-primary: #916bbf;
+  --qc-primary-dark: #a98ecf;
+  --qc-bg: #07051a;
+  --qc-surface: #0f0c24;
+  --qc-text: #ece9f5;
+  --qc-text-muted: #a79cc2;
+  --qc-border: #251e42;
+  --qc-shadow-tint: 145, 107, 191;
+  --qc-surface-tint: 15, 12, 36;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--qc-bg);
+  color: var(--qc-text);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--qc-primary);
+  text-decoration: none;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+/* ---- Shared page container -- every page's own content sits inside
+   this, so a single responsive tweak here reaches all of them. ---- */
+.page-shell {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+@media (max-width: 480px) {
+  .page-shell {
+    padding: 20px 14px;
+  }
+}
+
+/* ---- Generic "push everything after me to the far side" spacer, used
+   by every header bar (BrandBar, AppLayout, Landing, Login). ---- */
+.qc-flex-spacer {
+  flex: 1;
+}
+
+/* ---- Simple logo mark (replaces the old text-initial square) ---- */
+.qc-logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* ---- Chat page (TicketDetail + SubmitTicket's pending preview) --
+   contact-style header. Shared across two different pages, so it stays
+   global rather than duplicated into two component modules. ---- */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.chat-header__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(var(--qc-shadow-tint), 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chat-header__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-header__name {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.chat-header__status {
+  font-size: 12.5px;
+  color: var(--qc-text-muted);
+}
+
+.chat-card {
+  /* A faint dot-grid "wallpaper" behind the thread -- subtle enough not
+     to fight with the bubbles themselves, and muted in both themes. */
+  background-color: var(--qc-surface);
+  background-image: radial-gradient(circle, var(--qc-border) 1px, transparent 1px);
+  background-size: 16px 16px;
+  border: 1px solid var(--qc-border);
+  border-radius: 16px;
+}
+
+.chat-composer {
+  position: sticky;
+  bottom: 0;
+  background: var(--qc-bg);
+  padding-top: 8px;
+}
+
+.chat-composer__row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.chat-composer__row .ant-input {
+  background: var(--qc-surface);
+}
+
+/* ---- Ticket summary cards (MyTickets) ---- */
+.qc-ticket-card {
+  border-radius: 14px !important;
+  border: 1px solid var(--qc-border) !important;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.qc-ticket-card:hover {
+  box-shadow: 0 6px 18px rgba(var(--qc-shadow-tint), 0.14);
+  transform: translateY(-1px);
+}
+
+/* ---- Status pill -- one consistent, muted way to show a ticket's
+   status everywhere (chat header, ticket lists, approval queue) instead
+   of antd's bright preset Tag colors. A small dot carries the only real
+   color; the pill itself stays neutral. ---- */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  background: var(--qc-bg);
+  border: 1px solid var(--qc-border);
+  color: var(--qc-text);
+  white-space: nowrap;
+}
+
+.status-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ---- Support-manager area -- deliberately plainer than the
+   customer-facing chat: a sober internal tool, not a consumer brand. ---- */
+.qc-manager-shell {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+@media (max-width: 480px) {
+  .qc-manager-shell {
+    padding: 16px 12px 32px;
+  }
+}
+
+.qc-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px !important;
+}
+
+.qc-manager-badge .ant-badge-count {
+  background: var(--qc-text-muted) !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+
+.qc-manager-row {
+  cursor: pointer;
+}
+
+.qc-manager-row:hover {
+  background: var(--qc-bg) !important;
+}
