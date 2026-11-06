@@ -145,20 +145,40 @@ _FALSE_ACTION_CLAIM_PHRASES = (
 
 # Second, broader backstop -- a plain-text reply only ever reaches this
 # function when we already know (see the module-level note above) that no
-# propose_action/escalate_ticket call succeeded THIS run. A legitimate
-# reply at that point never needs to state a specific currency amount next
-# to refund/credit language at all -- the only place a customer should see
-# a specific proposed amount is propose_action's own fixed confirmation
-# message, which bypasses this function entirely (the loop returns before
-# the LLM is called again). So ANY currency amount mentioned alongside
-# "refund"/"credit" in free text here is, by construction, the model
-# narrating a decision that cannot have actually happened -- regardless of
-# which verb it used to describe it. This exists specifically because the
-# literal phrase list above is inherently incomplete (the model can always
-# phrase the same false claim a new way); this check doesn't depend on
-# guessing the exact wording.
-_CURRENCY_AMOUNT_PATTERN = re.compile(r"(?:₹|inr)\s*[\d,]+(?:\.\d{1,2})?", re.IGNORECASE)
-_REFUND_OR_CREDIT_WORDS = ("refund", "credit")
+# propose_action/escalate_ticket call succeeded THIS run. The only place a
+# customer should see a specific PROPOSED/COMPLETED amount is
+# propose_action's own fixed confirmation message, which bypasses this
+# function entirely (the loop returns before the LLM is called again). So a
+# currency amount directly TIED to refund/credit language in free text here
+# -- "refund of INR 420", "INR 420 credit", etc. -- is, by construction, the
+# model narrating a decision that cannot have actually happened, regardless
+# of which verb it used. This exists specifically because the literal
+# phrase list above is inherently incomplete (the model can always phrase
+# the same false claim a new way); this check doesn't depend on guessing
+# the exact wording.
+#
+# IMPORTANT -- this must only match the amount actually sitting next to
+# refund/credit language, NOT merely co-occurring anywhere in the same
+# reply. A real incident: the agent legitimately explains the order's real
+# total while explaining refund ELIGIBILITY -- e.g. "...a total amount of
+# INR 420.00... a refund or credit is not warranted until the order is at
+# least 30 minutes late" -- which is a completely truthful, grounded answer
+# (the order total came from check_order_status), not a false completed-
+# action claim. An earlier, looser version of this pattern treated ANY
+# currency amount anywhere near the words "refund"/"credit" in the whole
+# reply as a false claim, which silently escalated and hid perfectly
+# correct replies like that one from the customer on multiple tickets --
+# every single time the agent mentioned the order total while discussing
+# the refund policy. Scoping the match to the amount sitting immediately
+# next to refund/credit wording (not just present somewhere in the same
+# paragraph) fixes that false-positive while still catching the real
+# failure mode ("I've issued a refund of INR 420", "INR 420 credit is on
+# its way", etc.).
+_CURRENCY_REFUND_CLAIM_PATTERN = re.compile(
+    r"(?:refund|credit)\s*(?:of|for|:)?\s*(?:₹|inr)\s*[\d,]+(?:\.\d{1,2})?"
+    r"|(?:₹|inr)\s*[\d,]+(?:\.\d{1,2})?\s*(?:refund|credit)",
+    re.IGNORECASE,
+)
 
 
 def _claims_unperformed_action(reply_text: str) -> bool:
@@ -168,7 +188,7 @@ def _claims_unperformed_action(reply_text: str) -> bool:
     lowered = reply_text.lower()
     if any(phrase in lowered for phrase in _FALSE_ACTION_CLAIM_PHRASES):
         return True
-    if _CURRENCY_AMOUNT_PATTERN.search(reply_text) and any(w in lowered for w in _REFUND_OR_CREDIT_WORDS):
+    if _CURRENCY_REFUND_CLAIM_PATTERN.search(reply_text):
         return True
     return False
 
