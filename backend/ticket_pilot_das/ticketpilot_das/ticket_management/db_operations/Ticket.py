@@ -24,7 +24,14 @@ def submit_ticket(
     db: Session, customer_id: int, order_id: int = None, message: str = ""
 ) -> Ticket:
     """Create a brand-new ticket, record the customer's opening message, and
-    run the agent's investigation loop synchronously before returning.
+    run the agent's investigation loop synchronously before returning --
+    UNLESS the customer already has an open (not-yet-resolved) ticket for
+    this order, in which case this instead appends `message` to that
+    existing ticket via send_message() and returns it. That keeps
+    "Submit a Ticket" from creating several disconnected tickets when a
+    customer uses it more than once before their first conversation is
+    resolved; a real new ticket only ever gets created once the previous
+    one is actually resolved (or never existed).
 
     customer_id comes from the caller's own JWT (get_current_customer) --
     never from a request body field -- so there's no way to submit a
@@ -62,6 +69,18 @@ def submit_ticket(
                 # Scope check: a customer may only raise a ticket against their OWN order.
                 log.warning("submit_ticket: order %s does not belong to customer %s.", order_id, customer_id)
                 raise ValueError(f"Order {order_id} does not belong to customer {customer_id}")
+
+        # If this customer already has an open (not-yet-resolved) ticket for
+        # this exact order, continue THAT conversation instead of creating
+        # a duplicate -- see get_open_ticket_for_order's docstring for why.
+        existing_ticket = get_open_ticket_for_order(db, customer_id, order_id)
+        if existing_ticket is not None:
+            log.info(
+                "submit_ticket: customer %s already has open ticket %s for order %s -- "
+                "continuing it instead of creating a new one.",
+                customer_id, existing_ticket.T_Id, order_id,
+            )
+            return send_message(db, existing_ticket.T_Id, message)
 
         ticket = Ticket(
             C_Id=customer_id,
@@ -225,4 +244,29 @@ def get_tickets(db: Session, customer_id: int = None, status: str = None) -> Lis
         return query.order_by(Ticket.T_CreatedDate.desc()).all()
     except Exception as exc:
         log.error("Unexpected error listing tickets (customer_id=%s, status=%s): %s", customer_id, status, exc)
+        raise
+
+
+def get_open_ticket_for_order(db: Session, customer_id: int, order_id: int) -> Ticket | None:
+    """Most recent NOT-resolved ticket this customer already has open for
+    THIS order, if any.
+
+    Used by submit_ticket (below): before creating a brand-new ticket, we
+    check this first so a customer who already has an open conversation
+    about this order gets continued in THAT ticket (via send_message)
+    instead of ending up with several disconnected tickets for the same
+    issue -- e.g. clicking "Submit a Ticket" twice in a row while the
+    first one is still "investigating" or "awaiting_customer". Returns
+    None when there's no open ticket -- a normal state, not an error --
+    in which case the caller goes ahead and creates one."""
+    try:
+        resolved_id = get_cached_ticket_status_id_by_name(TicketStatus.RESOLVED.value)
+        return (
+            db.query(Ticket)
+            .filter(Ticket.C_Id == customer_id, Ticket.O_Id == order_id, Ticket.T_StatusId != resolved_id)
+            .order_by(Ticket.T_CreatedDate.desc())
+            .first()
+        )
+    except Exception as exc:
+        log.error("Unexpected error finding open ticket for customer %s/order %s: %s", customer_id, order_id, exc)
         raise

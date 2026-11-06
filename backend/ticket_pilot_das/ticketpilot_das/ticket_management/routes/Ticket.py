@@ -46,16 +46,23 @@ def submit_ticket(
     Description: Creates a new support ticket and runs the agent's full
         investigation loop SYNCHRONOUSLY before returning -- the HTTP
         request stays open until the agent has a reply, an escalation,
-        or a proposed action.
+        or a proposed action. If the customer already has an open
+        (not-yet-resolved) ticket for this order, this instead appends
+        the message to THAT ticket (same as sendMessage) rather than
+        creating a duplicate -- see submit_ticket's docstring.
     Inputs: order_id (optional path to a specific order), message. The
         customer is whoever's JWT this is -- there is no customer_id
         field in the body anymore (see SubmitTicketRequest).
     Outputs: the ticket, including the agent's reply (if resolved) in
         its message history.
     Happy Flow: order belongs to the customer (or is omitted and their
-        own most recent order is used) -> ticket + first TicketMessage
-        created -> AgentOrchestrator runs -> ticket returned with its
-        final status.
+        own most recent order is used) -> no open ticket exists for it
+        yet -> ticket + first TicketMessage created -> AgentOrchestrator
+        runs -> ticket returned with its final status.
+    Continuing Flow: an open ticket for this order already exists ->
+        message appended to it instead (agent re-runs if it was
+        investigating/awaiting_customer; just recorded if a human
+        already owns it) -> that same ticket returned.
     Error Flow: order_id given but doesn't belong to this customer, or
         the customer has no orders at all -> 400. No/invalid customer
         JWT -> 401.

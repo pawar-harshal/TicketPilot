@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, Card, Drawer, Form, Input, Typography } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import config from "../../data/config";
-import { submitTicket } from "../../store/ticketSlice";
+import { fetchTickets, submitTicket } from "../../store/ticketSlice";
 import BrandBar from "../../components/BrandBar/BrandBar";
 import ScenarioPicker from "../../components/ScenarioPicker/ScenarioPicker";
 import TicketMessageThread from "../../components/TicketMessageThread/TicketMessageThread";
 import Logo from "../../components/Logo/Logo";
 import OrderStatusPanel from "../../components/OrderStatusPanel/OrderStatusPanel";
+import StatusPill from "../../components/StatusPill/StatusPill";
 import { HelpIcon, ChevronRightIcon } from "../../components/IssueIcons/IssueIcons";
 import styles from "./SubmitTicket.module.css";
 
@@ -45,17 +46,44 @@ import styles from "./SubmitTicket.module.css";
  * feels like the chat opened immediately. The real TicketDetail page
  * (reached once submitTicket resolves) renders the identical message, so
  * there's no visual jump when we navigate there.
+ *
+ * The Get Help drawer also surfaces the customer's own ticket history
+ * (fetchTickets -- already returns ticket_id/status/last_message/created_date
+ * for all of this customer's tickets, no new endpoint needed): their one
+ * currently-open ticket, if any, at the top -- clicking it jumps straight
+ * into that conversation -- followed by their past resolved tickets. This
+ * is purely a "jump back in" convenience; the actual no-duplicate-tickets
+ * behavior (picking a scenario card while one ticket is already open
+ * continues THAT ticket instead of creating a new one) is enforced
+ * backend-side in submit_ticket/get_open_ticket_for_order, so it holds
+ * even if a customer never opens this list.
  */
 function SubmitTicket() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const session = useSelector((state) => state.session.user);
+  const { list: tickets } = useSelector((state) => state.tickets);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [loadingScenarioId, setLoadingScenarioId] = useState(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const [showCustomForm, setShowCustomForm] = useState(false);
   const [pendingPreview, setPendingPreview] = useState(null); // { message }
+
+  // Loaded once up front (not just when the drawer opens) so the "Get
+  // Help" entry itself could eventually reflect it too, and so there's no
+  // flash of an empty list the first time the drawer is opened.
+  useEffect(() => {
+    dispatch(fetchTickets());
+  }, [dispatch]);
+
+  const activeTicket = tickets.find((t) => t.status !== "resolved");
+  const resolvedTickets = tickets.filter((t) => t.status === "resolved");
+
+  const goToExistingTicket = (ticketId) => {
+    closeHelp();
+    navigate(config.ticketDetailPath(ticketId));
+  };
 
   const goToTicket = async (message) => {
     const ticket = await dispatch(submitTicket({ message })).unwrap();
@@ -173,6 +201,55 @@ function SubmitTicket() {
           body: { paddingBottom: 28 },
         }}
       >
+        {(activeTicket || resolvedTickets.length > 0) && (
+          <div className={styles.existingTickets}>
+            {activeTicket && (
+              <div
+                className={styles.ticketRow}
+                role="button"
+                tabIndex={0}
+                onClick={() => goToExistingTicket(activeTicket.ticket_id)}
+              >
+                <div className={styles.ticketRowInfo}>
+                  <span className={styles.ticketRowTitle}>Ticket #{activeTicket.ticket_id} &middot; Active</span>
+                  <span className={styles.ticketRowSubtitle}>{activeTicket.last_message}</span>
+                </div>
+                <StatusPill status={activeTicket.status} />
+              </div>
+            )}
+
+            {resolvedTickets.length > 0 && (
+              <div className={styles.resolvedList}>
+                <Typography.Text type="secondary" className={styles.resolvedListLabel}>
+                  Past tickets
+                </Typography.Text>
+                {resolvedTickets.map((t) => (
+                  <div
+                    key={t.ticket_id}
+                    className={styles.ticketRow}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => goToExistingTicket(t.ticket_id)}
+                  >
+                    <div className={styles.ticketRowInfo}>
+                      <span className={styles.ticketRowTitle}>Ticket #{t.ticket_id}</span>
+                      <span className={styles.ticketRowSubtitle}>{t.last_message}</span>
+                    </div>
+                    <StatusPill status={t.status} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeTicket && (
+              <Typography.Text type="secondary" className={styles.existingTicketsHint}>
+                You already have an open conversation -- picking an issue below will continue it instead of
+                starting a new one.
+              </Typography.Text>
+            )}
+          </div>
+        )}
+
         <ScenarioPicker onPick={handlePickScenario} loadingId={loadingScenarioId} />
 
         <div style={{ textAlign: "center", marginTop: 16 }}>

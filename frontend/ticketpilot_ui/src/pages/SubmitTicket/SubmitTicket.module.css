@@ -100,3 +100,69 @@
     height: 40px;
   }
 }
+
+/* "Get Help" drawer -- existing-ticket list at the top (active ticket to
+   jump back into, plus past resolved tickets below it), shown before
+   ScenarioPicker so a customer with an open conversation sees it before
+   picking a new issue card. */
+.existingTickets {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ticketRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--qc-border);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.ticketRow:hover {
+  border-color: var(--qc-primary);
+  box-shadow: 0 6px 18px rgba(var(--qc-shadow-tint), 0.12);
+}
+
+.ticketRowInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ticketRowTitle {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.ticketRowSubtitle {
+  font-size: 12px;
+  color: var(--qc-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resolvedList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resolvedListLabel {
+  font-size: 12px;
+  padding: 0 2px;
+}
+
+.existingTicketsHint {
+  display: block;
+  font-size: 12px;
+  padding: 0 2px;
+}
