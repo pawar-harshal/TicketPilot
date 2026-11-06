@@ -111,6 +111,16 @@ export const getTicketsService = async (status) => {
   return response.data;
 };
 
+// Manager-only. Wipes every ticket/message/approval and re-times the two
+// demo orders, by calling sp_reset_demo() server-side -- the same thing
+// that used to require SSHing into the VM and running a mysql command by
+// hand. Lets a manager reset the demo straight from the app, phone
+// included. See ticket_management.routes.Ticket.reset_demo.
+export const resetDemoService = async () => {
+  const response = await api.post(`/ticketmanagement/resetDemo`);
+  return response.data;
+};
+
 /* ==================================================================
  * approval_engine (support-manager only -- requires the JWT attached above)
  * ================================================================== */

@@ -7,6 +7,7 @@ anyone could submit a ticket "as" any customer_id, read any ticket_id, or
 list every ticket's status/last_message with no login at all.
 """
 from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from ticketpilot_das.auth.db_operations.Auth import get_current_customer, get_current_user, optional_oauth2_scheme
@@ -303,6 +304,39 @@ def get_tickets(
     except Exception as exc:
         log.error("Unexpected error in getTickets (customer_id=%s, status=%s): %s", customer_id, status, exc)
         raise HTTPException(status_code=500, detail="Could not list tickets.")
+
+
+@router.post("/resetDemo")
+def reset_demo(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Function: resetDemo
+    Description: Manager-only convenience endpoint that wipes every
+        Ticket/TicketMessage/Approval row and re-times the two demo
+        orders relative to right now, by calling the sp_reset_demo()
+        stored procedure -- the exact same thing that was previously
+        only runnable by hand over SSH ("mysql ... -e 'CALL
+        sp_reset_demo();'"). Lets a manager reset the demo data straight
+        from the app (including from a phone browser) with no terminal.
+    Inputs: none (auth via JWT -- manager only; a customer JWT is
+        rejected since get_current_user specifically requires a
+        support_manager's token, not a customer's).
+    Outputs: { "status": "ok" }.
+    Happy Flow: stored procedure runs -> all tickets/messages/approvals
+        gone, demo orders re-timed -> {"status": "ok"}.
+    Error Flow: no/invalid manager JWT -> 401. Any DB error -> 500.
+    """
+    try:
+        log.info("POST resetDemo -- triggered by user=%s", current_user.U_Id)
+        db.execute(text("CALL sp_reset_demo();"))
+        db.commit()
+        return {"status": "ok"}
+    except Exception as exc:
+        log.error("Unexpected error in resetDemo: %s", exc)
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Could not reset demo data.")
 
 
 def _assert_owns_ticket(db: Session, ticket_id: int, customer_id: int) -> None:
