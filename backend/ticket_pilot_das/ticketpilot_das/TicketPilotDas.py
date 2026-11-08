@@ -14,11 +14,13 @@ own default console logging config, which can undo the file-only logging
 Logger.py sets up (see the log_config=None comment on uvicorn.run() below
 for the same reason, for the `python -m` path).
 """
+import asyncio
 from contextlib import asynccontextmanager
 
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from ticketpilot_das.approval_engine.db_operations.ApprovalActionType import load_approval_action_cache
 from ticketpilot_das.approval_engine.db_operations.ApprovalStatusType import load_approval_status_cache
@@ -40,6 +42,46 @@ import ticketpilot_das.auth.entity.DbModels  # noqa: F401
 import ticketpilot_das.ticket_management.entity.DbModels  # noqa: F401
 
 log = get_logger("main")
+
+
+async def _auto_reset_demo_loop():
+    """
+    Background task: calls the same sp_reset_demo() stored procedure the
+    manager's manual "Reset Demo Data" button uses (see routes/Ticket.py's
+    resetDemo endpoint), on a fixed interval (Configuration.DEMO_AUTO_RESET_MINUTES),
+    so the public demo stays clean without anyone having to press the button.
+
+    Fixed-interval, not idle-based: it fires on this clock regardless of
+    whether someone is mid-demo at that moment -- a deliberate simplicity
+    tradeoff, not an oversight.
+
+    Runs forever until cancelled (see lifespan's shutdown below). A single
+    failed reset is logged and the loop keeps going -- one bad iteration
+    shouldn't permanently stop future resets.
+    """
+    interval_seconds = Configuration.DEMO_AUTO_RESET_MINUTES * 60
+    log.info("Auto-reset loop starting -- resetting demo data every %s minutes.", Configuration.DEMO_AUTO_RESET_MINUTES)
+    while True:
+        try:
+            await asyncio.sleep(interval_seconds)
+            db = SessionLocal()
+            try:
+                db.execute(text("CALL sp_reset_demo();"))
+                db.commit()
+                log.info("Auto-reset: demo data reset successfully.")
+            except Exception as exc:
+                db.rollback()
+                log.error("Auto-reset: sp_reset_demo() failed: %s", exc)
+            finally:
+                db.close()
+        except asyncio.CancelledError:
+            log.info("Auto-reset loop stopping (app shutting down).")
+            raise
+        except Exception as exc:
+            # Guards the sleep/loop machinery itself, not just the DB call
+            # above -- so one unexpected error here can't silently kill
+            # future resets for the rest of the process's life.
+            log.error("Auto-reset loop hit an unexpected error, will retry next cycle: %s", exc)
 
 
 @asynccontextmanager
@@ -74,7 +116,15 @@ async def lifespan(app: FastAPI):
         log.error("Failed to load master-table caches: %s", exc)
         raise
 
+    auto_reset_task = asyncio.create_task(_auto_reset_demo_loop())
+
     yield
+
+    auto_reset_task.cancel()
+    try:
+        await auto_reset_task
+    except asyncio.CancelledError:
+        pass
 
 
 app = FastAPI(title="TicketPilot", version="1.0.0", lifespan=lifespan)

@@ -60,6 +60,14 @@ try:
 
     AUTO_CREATE_TABLES = GENERAL["auto_create_tables"].strip().lower() == "true"
 
+    # How often (minutes) the backend automatically calls sp_reset_demo()
+    # on its own, in addition to the manager's manual "Reset Demo Data"
+    # button -- keeps the public demo clean without anyone having to
+    # remember to press it. Fixed-interval, not idle-based: it fires on
+    # this clock regardless of whether someone is mid-demo. See
+    # TicketPilotDas.py's _auto_reset_demo_loop().
+    DEMO_AUTO_RESET_MINUTES = int(GENERAL["demo_auto_reset_minutes"])
+
     with open(SYSTEM_PROMPT_PATH, "r", encoding="utf-8") as f:
         SYSTEM_PROMPT = f.read().strip()
 
